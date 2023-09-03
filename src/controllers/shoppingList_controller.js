@@ -139,10 +139,13 @@ const addIngredientToShoppingList = asyncWrapper(async (req, res) => {
   const { ingredientName, ingredientAmount, ingredientUnit } = req.body;
 
   try {
-    const shoppingList = await ShoppingList.findOne({ userID: userId });
+    let shoppingList = await ShoppingList.findOne({ userID: userId });
 
     if (!shoppingList) {
-      throw new NotFoundError('Shopping list not found');
+      shoppingList = new ShoppingList({
+        userID: userId,
+        ingredients: [],
+      })
     }
 
     // Check if the ingredient already exists in the shopping list
