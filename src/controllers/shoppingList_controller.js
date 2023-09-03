@@ -26,7 +26,7 @@ const createOrUpdateShoppingList = async (userId, ingredients) => {
       if (existingIngredient) {
         existingIngredient.ingredientAmount += ingredient.ingredientAmount;
       } else {
-        shoppingList.ingredients.push(ingredient);
+        shoppingList.ingredients.unshift(ingredient);
       }
     }
   }
