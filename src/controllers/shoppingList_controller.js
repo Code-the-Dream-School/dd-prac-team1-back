@@ -42,11 +42,14 @@ const createOrUpdateShoppingList = async (userId, ingredients) => {
 const addRecipeToShoppingList = asyncWrapper(async (req, res) => {
   const { recipeId } = req.params;
   const userId = req.user.userId;
-  let { servingSize = 1 } = req.body;
+  let { servingSize } = req.body;
+  console.log(servingSize)
 
   if (servingSize <= 0) {
-    servingSize = 1;
+   servingSize = 1;
   }
+
+
   try {
     const recipe = await Recipe.findById(recipeId);
 
@@ -55,13 +58,9 @@ const addRecipeToShoppingList = asyncWrapper(async (req, res) => {
     }
 
     const originalServingSize = recipe.recipeServings;
-    const multiplier = () => {
-      if (originalServingSize === 0) {
-        servingSize;
-      } else {
-        servingSize / originalServingSize;
-      }
-    };
+    console.log(originalServingSize)
+    const multiplier = servingSize / originalServingSize;
+    console.log(multiplier, originalServingSize, servingSize)
 
     const { recipeIngredients } = recipe;
 
