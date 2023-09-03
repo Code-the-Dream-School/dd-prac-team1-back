@@ -26,7 +26,7 @@ const createOrUpdateShoppingList = async (userId, ingredients) => {
       if (existingIngredient) {
         existingIngredient.ingredientAmount += ingredient.ingredientAmount;
       } else {
-        shoppingList.ingredients.unshift(ingredient);
+        shoppingList.ingredients.push(ingredient);
       }
     }
   }
@@ -164,7 +164,7 @@ const addIngredientToShoppingList = asyncWrapper(async (req, res) => {
     }
 
     // Add the new ingredient to the shopping list
-    shoppingList.ingredients.push({
+    shoppingList.ingredients.unshift({
       ingredientName,
       ingredientAmount,
       ingredientUnit,
