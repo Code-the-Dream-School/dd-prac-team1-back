@@ -56,8 +56,8 @@ const addRecipeToShoppingList = asyncWrapper(async (req, res) => {
       throw new NotFoundError('Recipe not found');
     }
 
-    const originalServingSize = recipe.recipeServings;
-    if (originalServingSize === '' || originalServingSize <= 0){
+    let originalServingSize = recipe.recipeServings;
+    if (originalServingSize === '' || originalServingSize <= 0) {
       originalServingSize = 1;
     }
     const multiplier = servingSize / originalServingSize;
