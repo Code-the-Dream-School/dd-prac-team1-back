@@ -10,29 +10,31 @@ const emailValidation = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 // Create or update shopping list for a recipe
 const createOrUpdateShoppingList = async (userId, ingredients) => {
   ingredients = ingredients || [];
+  let shoppingList;
+  try {
+    shoppingList = await ShoppingList.findOne({ userID: userId });
 
-  let shoppingList = await ShoppingList.findOne({ userID: userId });
+    if (!shoppingList) {
+      shoppingList = new ShoppingList({ userID: userId, ingredients });
+      await shoppingList.save();
+    } else {
+      // Loop through the ingredients to update or add them
+      for (const ingredient of ingredients) {
+        const existingIngredient = shoppingList.ingredients.find(
+          (item) => item.ingredientName === ingredient.ingredientName
+        );
 
-  if (!shoppingList) {
-    shoppingList = new ShoppingList({ userID: userId, ingredients });
-    await shoppingList.save();
-  } else {
-    // Loop through the ingredients to update or add them
-    for (const ingredient of ingredients) {
-      const existingIngredient = shoppingList.ingredients.find(
-        (item) => item.ingredientName === ingredient.ingredientName
-      );
-
-      if (existingIngredient) {
-        existingIngredient.ingredientAmount += ingredient.ingredientAmount;
-      } else {
-        shoppingList.ingredients.push(ingredient);
+        if (existingIngredient) {
+          existingIngredient.ingredientAmount += ingredient.ingredientAmount;
+        } else {
+          shoppingList.ingredients.push(ingredient);
+        }
       }
+      await shoppingList.save();
     }
+  } catch (error) {
+    throw new Error('Error creating/updating shopping list');
   }
-
-  await shoppingList.save();
-
   return shoppingList;
 };
 
