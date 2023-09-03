@@ -45,7 +45,7 @@ const addRecipeToShoppingList = asyncWrapper(async (req, res) => {
   let { servingSize } = req.body;
   console.log(servingSize)
 
-  if (servingSize <= 0) {
+  if (servingSize === "" || servingSize <= 0) {
    servingSize = 1;
   }
 
