@@ -55,7 +55,13 @@ const addRecipeToShoppingList = asyncWrapper(async (req, res) => {
     }
 
     const originalServingSize = recipe.recipeServings;
-    const multiplier = servingSize / originalServingSize;
+    const multiplier = () => {
+      if (originalServingSize === 0) {
+        servingSize;
+      } else {
+        servingSize / originalServingSize;
+      }
+    };
 
     const { recipeIngredients } = recipe;
 
